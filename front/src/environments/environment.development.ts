@@ -1,6 +1,6 @@
 export const environment = {
   baseUrl: 'http://localhost:3000',
-  apiUrl: 'http://localhost:3000/api',
+  apiUrl: 'http://localhost:8080/api',
   // You will need to create a Firebase project and replace the configuration here with yours
   firebase: {
     apiKey: "AIzaSyDxwbJq8gFmiFpPrC42jsufSBLl2yuNNgQ",

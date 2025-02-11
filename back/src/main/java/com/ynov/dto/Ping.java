@@ -1,4 +1,4 @@
-package com.ynov.modelDto;
+package com.ynov.dto;
 
 public record Ping(String status) {
 }

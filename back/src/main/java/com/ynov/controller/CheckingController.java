@@ -1,6 +1,6 @@
 package com.ynov.controller;
 
-import com.ynov.modelDto.Ping;
+import com.ynov.dto.Ping;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;

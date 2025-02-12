@@ -27,13 +27,13 @@ public class UserController {
     @POST
     @Path("/users")
     @Authenticated
-    public void createUser(UserDto userDto, @Context SecurityContext securityContext) {
+    public Response createUser(UserDto userDto, @Context SecurityContext securityContext) {
         String email = jwtToken.getClaim(Claims.email);
         String uid = securityContext.getUserPrincipal().getName();
         userDto.setEmail(email);
         userDto.setUid(uid);
         userService.createUser(userDto);
-        return Response.ok().build();
+        return Response.status(Response.Status.CREATED).build();
     }
     @GET
     @Path("/users/me")

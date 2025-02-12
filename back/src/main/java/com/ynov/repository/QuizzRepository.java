@@ -9,6 +9,6 @@ import java.util.List;
 @ApplicationScoped
 public class QuizzRepository implements PanacheRepository<Quizz> {
     public List<Quizz> findByUserId(String UID) {
-        return list("user.id", UID);
+        return list("user.uid", UID);
     }
 }

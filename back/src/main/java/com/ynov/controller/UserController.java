@@ -32,7 +32,7 @@ public class UserController {
         userDto.setEmail(jwtToken.getClaim(Claims.email));
         userDto.setUid(uid);
         userService.createUser(userDto);
-        return Response.ok().build();
+        return Response.status(Response.Status.CREATED).build();
     }
     @GET
     @Path("/users/me")

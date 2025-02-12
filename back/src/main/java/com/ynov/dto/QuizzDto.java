@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class QuizzDto {
     long id;
     String title;
+    String description;
 }

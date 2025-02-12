@@ -12,6 +12,6 @@ public class CheckingController {
     @Path("/ping")
     @Produces(MediaType.APPLICATION_JSON)
     public Ping ping() {
-        return new Ping("OK");
+        return new Ping("OK", "OK");
     }
 }

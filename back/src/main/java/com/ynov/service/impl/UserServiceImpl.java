@@ -6,18 +6,20 @@ import com.ynov.model.User;
 import com.ynov.repository.UserRepository;
 import com.ynov.service.IUserService;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
     @Override
     public Optional<UserDto> findUserByID(long id) {
@@ -31,13 +33,14 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<UserDto> findAllUser() {
-        return List.of();
+        return userRepository.findAll().stream()
+                .map(UserMapper::mapUserToUserDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void createUser(UserDto userDTO, String uid) {
-        User user = userMapper.mapUserDtoToUser(userDTO);
-        user.setUid(uid);
+    public void createUser(UserDto userDTO) {
+        User user = UserMapper.mapUserDtoToUser(userDTO);
         log.info("User {} created :).", user.getUsername());
         userRepository.persist(user);
     }

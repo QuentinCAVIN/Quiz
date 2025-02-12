@@ -6,15 +6,17 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class UserMapper {
-    public User mapUserDtoToUser (UserDto userDto) {
+    public static User mapUserDtoToUser (UserDto userDto) {
         return User.builder()
+                .uid(userDto.getUid())
                 .email(userDto.getEmail())
                 .username(userDto.getUsername())
                 .build();
     }
 
-    public UserDto mapUserToUserDto (User user) {
+    public static UserDto mapUserToUserDto(User user) {
         return UserDto.builder()
+                .uid(user.getUid())
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .build();

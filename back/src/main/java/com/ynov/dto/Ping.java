@@ -1,4 +1,4 @@
 package com.ynov.dto;
 
-public record Ping(String status) {
+public record Ping(String status, String details) {
 }

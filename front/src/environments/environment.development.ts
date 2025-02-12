@@ -3,12 +3,12 @@ export const environment = {
   apiUrl: 'http://localhost:8080/api',
   // You will need to create a Firebase project and replace the configuration here with yours
   firebase: {
-    apiKey: "AIzaSyDxwbJq8gFmiFpPrC42jsufSBLl2yuNNgQ",
-    authDomain: "quizz-tp-web-service.firebaseapp.com",
-    projectId: "quizz-tp-web-service",
-    storageBucket: "quizz-tp-web-service.firebasestorage.app",
-    messagingSenderId: "264957114954",
-    appId: "1:264957114954:web:6528e86b7bbee99a7944b3"
+    apiKey: "AIzaSyBp2y1R3ORPm-WXYTfCifib1GYjuVc_TJk",
+    authDomain: "quizzy-allavin.firebaseapp.com",
+    projectId: "quizzy-allavin",
+    storageBucket: "quizzy-allavin.firebasestorage.app",
+    messagingSenderId: "483630506296",
+    appId: "1:483630506296:web:39c758c64e3042a40ba1cd"
   },
   useSocketIo: true
 };

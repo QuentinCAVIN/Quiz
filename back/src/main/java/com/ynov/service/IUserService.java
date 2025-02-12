@@ -12,7 +12,7 @@ public interface IUserService {
 
     List<UserDto> findAllUser();
 
-    void createUser(UserDto postUserDTO, String uid);
+    void createUser(UserDto UserDTO);
 
     void deleteUser(long id);
 

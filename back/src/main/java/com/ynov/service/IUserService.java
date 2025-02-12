@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface IUserService {
     Optional<UserDto> findUserByID(long id);
+    Optional<UserDto> findUserByUID(String uid, String email);
 
     Optional<UserDto> findUserByUsername(String name);
 
@@ -14,7 +15,7 @@ public interface IUserService {
 
     void createUser(UserDto UserDTO);
 
-    void deleteUser(long id);
+    boolean deleteUser(long id);
 
     Optional<Long> checkAuthUser(String name, String password);
 

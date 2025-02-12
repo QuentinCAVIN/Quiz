@@ -23,8 +23,9 @@ public class UserController {
     @Path("/users")
     @Authenticated
     public void createUser(UserDto userDto, @Context SecurityContext securityContext) {
+        String email = jwtToken.getClaim(Claims.email);
         String uid = securityContext.getUserPrincipal().getName();
-        userDto.setEmail(jwtToken.getClaim(Claims.email));
+        userDto.setEmail(email);
         userDto.setUid(uid);
         userService.createUser(userDto);
     }

@@ -27,13 +27,20 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public Optional<UserDto> findUserByUID(String uid, String email) {
+        return userRepository.findUserByUID(uid).map(UserMapper::mapUserToUserDto);
+    }
+
+    @Override
     public Optional<UserDto> findUserByUsername(String name) {
-        return Optional.empty();
+        return userRepository.findByUsername(name)
+                .map(UserMapper::mapUserToUserDto);
     }
 
     @Override
     public List<UserDto> findAllUser() {
-        return userRepository.findAll().stream()
+        return userRepository.findAll()
+                .stream()
                 .map(UserMapper::mapUserToUserDto)
                 .collect(Collectors.toList());
     }
@@ -46,8 +53,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void deleteUser(long id) {
-
+    public boolean deleteUser(long id) {
+        return userRepository.deleteById(id);
     }
 
     @Override

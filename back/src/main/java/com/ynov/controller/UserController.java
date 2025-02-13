@@ -42,12 +42,15 @@ public class UserController {
         String uid = securityContext.getUserPrincipal().getName();
         String email = jwtToken.getClaim(Claims.email);
         if (uid == null || email == null) {
-            return RestResponse.status(RestResponse.Status.UNAUTHORIZED);
+            return RestResponse.status(RestResponse.Status.UNAUTHORIZED); //TODO question : on ne peut jamais rentrer dans cette boucle a cause du AUthenticated  faut il la laisser ?
+            //Réponse Frédéric: effectivement vu qu'on ne peut jamais atteindre ce code il faut l'effacer.
         }
         Optional<UserDto> userDtoSearched = userService.findUserByUID(uid, email);
         if (userDtoSearched.isPresent()) {
             return RestResponse.ok(userDtoSearched.get());
         }
         return RestResponse.status(RestResponse.Status.NOT_FOUND);
+        //TODO question : on ne peut fonctionnellement jamais atteindre ce code car un utilisateur connecté existe forcément en BDD
+        //Réponse: si la requete users/me et faite avant que l'utilisateur soit créé on peut atteindre ce code, il faut donc le tester
     }
 }

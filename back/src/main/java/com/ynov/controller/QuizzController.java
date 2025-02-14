@@ -10,9 +10,11 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.UriBuilder;
 import lombok.RequiredArgsConstructor;
 import org.jboss.resteasy.reactive.RestResponse;
 
+import java.net.URI;
 import java.util.List;
 
 @Path("/api")
@@ -33,7 +35,8 @@ public class QuizzController {
     @Authenticated
     public Response createQuiz(QuizzDto quizzDto, @Context SecurityContext securityContext) {
         String UID = securityContext.getUserPrincipal().getName();
-        quizzService.createQuizz(quizzDto, UID);
-        return Response.status(Response.Status.CREATED).build();
+        Long id = quizzService.createQuizz(quizzDto, UID);
+        URI location = UriBuilder.fromPath("/quiz/{id}").build(id);
+        return Response.created(location).build();
     }
 }

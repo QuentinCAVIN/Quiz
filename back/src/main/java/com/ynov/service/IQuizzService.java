@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IQuizzService {
     List<QuizzDto> getQuizzesByUser(String userId);
-    void createQuizz(QuizzDto quizzDto, String UID);
+    Long createQuizz(QuizzDto quizzDto, String UID);
 }

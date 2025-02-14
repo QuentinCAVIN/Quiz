@@ -34,13 +34,14 @@ public class QuizzServiceImpl implements IQuizzService {
                 .collect(Collectors.toList());
     }
     @Override
-    public void createQuizz(QuizzDto quizzDto, String UID) {
+    public Long createQuizz(QuizzDto quizzDto, String UID) {
         Optional<User> userSearched = userRepository.findUserByUID(UID);
         if (userSearched.isPresent()) {
             Quizz quizz = QuizzMapper.mapQuizzDtoToQuizz(quizzDto);
             quizz.setUser(userSearched.get());
             quizzRepository.persist(quizz);
-            log.info("Quizz {} created :).", quizz.getTitle());
+            log.info("Quizz N {} {} created :).", quizz.id, quizz.getTitle());
+            return quizz.id;
         }
         else {
             log.error("User not found :(");

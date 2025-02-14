@@ -14,8 +14,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "quizzes")
 @Builder
 public class Quizz extends PanacheEntity {
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String title;
+
+    @Column(unique = true, nullable = false)
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UID", nullable = false)

@@ -1,4 +1,6 @@
 package com.ynov.dto;
 
-public record quizzResponses() {
+import java.util.List;
+
+public record QuizzResponses(QuizzDto quizzDto, List<QuizzDto> questions) {
 }

@@ -36,4 +36,13 @@ public class QuizzController {
         URI location = UriBuilder.fromPath("/quiz/{id}").build(id);
         return Response.created(location).build();
     }
+    @GET
+    @Path("/{id}")
+    @Authenticated
+    public RestResponse<QuizzResponses> createQuiz(@PathParam("id") Long id, @Context SecurityContext securityContext) {
+        String uid = securityContext.getUserPrincipal().getName();
+        List<QuizzDto> quizzes = quizzService.getQuizzesByUser(uid); // TODO QuizzDto à la place de QuestionDto car non implementé
+        QuizzDto quizzDto = quizzService.getQuizzById(id);
+        return RestResponse.ok(new QuizzResponses(quizzDto, quizzes));
+    }
 }

@@ -48,4 +48,9 @@ public class QuizzServiceImpl implements IQuizzService {
             throw new WebApplicationException("User not found", Response.Status.NOT_FOUND);
         }
     }
+
+    @Override
+    public QuizzDto getQuizzById(Long quizzId) {
+        return QuizzMapper.mapQuizzToQuizzDto(quizzRepository.findById(quizzId));
+    }
 }

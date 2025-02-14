@@ -13,15 +13,14 @@ import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
 public class IssuesIT {
-
+    static UserDto user = UserDto.builder().username("user").email("user@gmail.com").build();
 
     @Test
-    @TestSecurity(user = "user"+ 1, roles = "viewer")
+    @TestSecurity(user = "UIDuser", roles = "viewer")// TODO : role inutile pour le moment, a supprimer si nécessaire
     @JwtSecurity(claims = {
-            @Claim(key = "email", value = "user1@gmail.com")})
+            @Claim(key = "email", value = "user@gmail.com")})
     public void getPingReturnPongWhenDatabaseIsRunning() {
-        createUserInDB(1);
-
+        createUserInDB();
         RestAssured
                 .given()
 
@@ -35,12 +34,13 @@ public class IssuesIT {
     }
 
     @Test
-    @TestSecurity(user = "user" + 2)
+    @TestSecurity(user = "UIDpostUser")
     @JwtSecurity(claims = {
-            @Claim(key = "email", value = "user" + 2 + "@gmail.com")})
+            @Claim(key = "email", value = "postuser@gmail.com")})
     public void postUsersShouldCreateUser() {
         UserDto user = new UserDto();
-        user.setUsername("user" + 2);
+        user.setUsername("postUser");
+        user.setEmail("postuser@gmail.com");
 
         RestAssured
                 .given()
@@ -57,7 +57,8 @@ public class IssuesIT {
     @Test
     public void postUsersShouldNotCreateUserWhenUserIsNotAuthenticated() {
         UserDto user = new UserDto();
-        user.setUsername("user" + 3);
+        user.setUsername("postUser");
+        user.setEmail("postuser@gmail.com");
 
         RestAssured
                 .given().contentType(ContentType.JSON).body(user)
@@ -70,24 +71,23 @@ public class IssuesIT {
     }
 
     @Test
-    @TestSecurity(user = "user" + 4)
+    @TestSecurity(user = "UIDuser")
     @JwtSecurity(claims = {
-            @Claim(key = "email", value = "user" + 4 + "@gmail.com")})
+            @Claim(key = "email", value = "user@gmail.com")})
     public void getUsersMeShouldReturnAuthenticatedUser() {
-        createUserInDB(4);
-
+        createUserInDB();
         RestAssured
                 .when()
                 .get("/api/users/me")
 
-                .then().body("username", equalTo("user" + 4))
+                .then().body("username", equalTo("user"))
                 .statusCode(200);
     }
 
     @Test
-    @TestSecurity(user = "user" + 5)
+    @TestSecurity(user = "UIDuser")
     @JwtSecurity(claims = {
-            @Claim(key = "email", value = "user" + 5 + "@gmail.com")})
+            @Claim(key = "email", value = "user@gmail.com")})
     public void getUsersMeShouldNotReturnUserAbsentInDB() {
         RestAssured
                 .when()
@@ -97,9 +97,35 @@ public class IssuesIT {
                 .statusCode(404);
     }
 
-    private void createUserInDB(int userNumber) {
+    @Test
+    @TestSecurity(user = "UIDuserAbsentInDB")
+    @JwtSecurity(claims = {
+            @Claim(key = "email", value = "useraidb@gmail.com")})
+    public void getQuizMeShouldNotReturnUserAbsentInDB() {
+        RestAssured
+                .when()
+                .get("/api/users/me")
+
+                .then().body(is(emptyOrNullString()))
+                .statusCode(404);
+    }
+
+    @Test
+    @TestSecurity(user = "UIDuser")
+    public void getQuizMeShouldNotReturnUserAbsentInDB2() {
+        RestAssured
+                .when()
+                .get("/api/users/me")
+
+                .then().body(is(emptyOrNullString()))
+                .statusCode(400);
+    }
+
+    //Méthode utilitaire nécessaire aux tests
+    private static void createUserInDB() {
         UserDto user = new UserDto();
-        user.setUsername("user" + userNumber);
+        user.setUsername("user");
+        user.setEmail("user@gmail.com");
         RestAssured.given().contentType(ContentType.JSON).body(user).when().post("/api/users");
     }
 }

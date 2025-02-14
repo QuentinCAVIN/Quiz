@@ -17,7 +17,7 @@ public class Quizz extends PanacheEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -10,4 +10,10 @@ public class QuizzMapper {
                 .id(quizz.id)
                 .build();
     }
+    public static Quizz mapQuizzDtoToQuizz(QuizzDto quizzDto) {
+        return Quizz.builder()
+                .title(quizzDto.getTitle())
+                .description(quizzDto.getDescription())
+                .build();
+    }
 }

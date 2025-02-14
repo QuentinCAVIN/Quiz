@@ -41,8 +41,8 @@ public class UserController {
     public RestResponse<UserDto> getCurrentUser(@Context SecurityContext securityContext) {
         String uid = securityContext.getUserPrincipal().getName();
         String email = jwtToken.getClaim(Claims.email);
-        if (uid == null || email == null) {
-            return RestResponse.status(RestResponse.Status.UNAUTHORIZED);
+        if (email == null) {
+            return RestResponse.status(RestResponse.Status.BAD_REQUEST);
         }
         Optional<UserDto> userDtoSearched = userService.findUserByUID(uid, email);
         if (userDtoSearched.isPresent()) {

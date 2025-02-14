@@ -5,5 +5,6 @@ import com.ynov.dto.QuizzDto;
 import java.util.List;
 
 public interface IQuizzService {
-    public List<QuizzDto> getQuizzesByUser(String userId);
+    List<QuizzDto> getQuizzesByUser(String userId);
+    Long createQuizz(QuizzDto quizzDto, String UID);
 }

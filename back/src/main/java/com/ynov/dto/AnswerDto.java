@@ -5,15 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class QuizzDto {
-    long id;
+public class AnswerDto {
     String title;
-    String description;
-    List<QuestionDto> questions;
+    boolean isCorrect;
 }

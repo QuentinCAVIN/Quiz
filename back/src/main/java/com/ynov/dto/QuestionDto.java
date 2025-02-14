@@ -11,9 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-public class QuizzDto {
-    long id;
-    String title;
-    String description;
-    List<QuestionDto> questions;
+public class QuestionDto {
+    private String title;
+    private List<AnswerDto> answers;
 }

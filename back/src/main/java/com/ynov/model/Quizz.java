@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -23,4 +25,7 @@ public class Quizz extends PanacheEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UID", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "quizz", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Question> questions;
 }

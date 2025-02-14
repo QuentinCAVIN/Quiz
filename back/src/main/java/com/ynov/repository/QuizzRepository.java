@@ -1,5 +1,6 @@
 package com.ynov.repository;
 
+import com.ynov.model.Question;
 import com.ynov.model.Quizz;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;

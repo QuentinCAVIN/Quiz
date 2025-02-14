@@ -1,8 +1,7 @@
 package com.ynov.controller;
 
-import com.ynov.dto.QuizzDto;
-import com.ynov.dto.QuizzResponse;
-import com.ynov.dto.QuizzResponses;
+import com.ynov.dto.*;
+import com.ynov.service.IQuestionService;
 import com.ynov.service.IQuizzService;
 import io.quarkus.security.Authenticated;
 import jakarta.ws.rs.*;
@@ -20,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuizzController {
     private final IQuizzService quizzService;
+    private final IQuestionService questionService;
 
     @GET
     @Authenticated
@@ -35,5 +35,23 @@ public class QuizzController {
         Long id = quizzService.createQuizz(quizzDto, UID);
         URI location = UriBuilder.fromPath("/quiz/{id}").build(id);
         return Response.created(location).build();
+    }
+    @GET
+    @Path("/{id}")
+    @Authenticated
+    public RestResponse<QuizzDto> getQuiz(@PathParam("id") Long id) {
+       if (quizzService.getQuizzById(id).isPresent()){
+           return RestResponse.ok(quizzService.getQuizzById(id).get());
+       } else {
+           return RestResponse.status(RestResponse.Status.NOT_FOUND);
+       }
+    }
+
+    @POST
+    @Path("/{id}/questions")
+    @Authenticated
+    public RestResponse<QuestionDto> createQuestion(@PathParam("id") Long id, QuestionDto questionDto) {
+        questionService.createQuestion(questionDto, id);
+        return RestResponse.status(RestResponse.Status.CREATED);
     }
 }

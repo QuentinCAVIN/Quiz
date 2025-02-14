@@ -85,7 +85,7 @@ public class IssuesIT {
     }
 
     @Test
-    @TestSecurity(user = "UIDuser")
+    @TestSecurity(user = "UIDuserAbsentInDB")
     @JwtSecurity(claims = {
             @Claim(key = "email", value = "user@gmail.com")})
     public void getUsersMeShouldNotReturnUserAbsentInDB() {
@@ -98,13 +98,13 @@ public class IssuesIT {
     }
 
     @Test
-    @TestSecurity(user = "UIDuserAbsentInDB")
+    @TestSecurity(user = "UIuser")
     @JwtSecurity(claims = {
-            @Claim(key = "email", value = "useraidb@gmail.com")})
-    public void getQuizMeShouldNotReturnUserAbsentInDB() {
+            @Claim(key = "email", value = "user@gmail.com")})
+    public void getQuizzShouldReturnAllQuizzFromUsers() {
         RestAssured
                 .when()
-                .get("/api/users/me")
+                .get("/api/quizz")
 
                 .then().body(is(emptyOrNullString()))
                 .statusCode(404);
@@ -112,10 +112,10 @@ public class IssuesIT {
 
     @Test
     @TestSecurity(user = "UIDuser")
-    public void getQuizMeShouldNotReturnUserAbsentInDB2() {
+    public void getQuizzWrongADeterminer() {
         RestAssured
                 .when()
-                .get("/api/users/me")
+                .get("/api/quizz")
 
                 .then().body(is(emptyOrNullString()))
                 .statusCode(400);

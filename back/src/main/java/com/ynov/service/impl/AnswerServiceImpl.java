@@ -26,11 +26,11 @@ public class AnswerServiceImpl implements IAnswerService {
          Answer answer =  AnswerMapper.mapAnswerDtoToAnswer(answerDto);
          answer.setQuestion(questionService.getQuestionById(questionId));
          answerRepository.persist(answer);
-    };
+    }
 
     public List<AnswerDto> getAnswersByQuestionId(long questionId) {
         return answerRepository.findByQuestionId(questionId).stream()
                 .map(AnswerMapper::mapAnswerToAnswerDto)
                 .collect(Collectors.toList());
-    };
+    }
 }

@@ -11,13 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Data
-@Table(name = "questions")
+@Table(name = "reponses")
 @Builder
 public class Answer extends PanacheEntity {
-    @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
     private boolean isCorrect;
 
     @ManyToOne(fetch = FetchType.LAZY)

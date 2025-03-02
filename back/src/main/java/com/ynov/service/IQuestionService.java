@@ -1,7 +1,6 @@
 package com.ynov.service;
 
 import com.ynov.dto.QuestionDto;
-import com.ynov.dto.UserDto;
 import com.ynov.model.Question;
 
 import java.util.List;

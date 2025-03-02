@@ -8,7 +8,6 @@ import com.ynov.dto.QuizzDto;
 import com.ynov.model.Question;
 import com.ynov.model.Quizz;
 import com.ynov.repository.QuestionRepository;
-import com.ynov.repository.QuizzRepository;
 import com.ynov.service.IQuestionService;
 import com.ynov.service.IQuizzService;
 import jakarta.enterprise.context.ApplicationScoped;

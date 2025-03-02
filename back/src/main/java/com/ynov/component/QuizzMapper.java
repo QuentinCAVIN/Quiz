@@ -19,9 +19,6 @@ public class QuizzMapper {
         return Quizz.builder()
                 .title(quizzDto.getTitle())
                 .description(quizzDto.getDescription())
-                .questions(quizzDto.getQuestions().stream()
-                        .map(QuestionMapper::mapQuestionDtoToQuestion)
-                        .collect(Collectors.toList()))
                 .build();
     }
 }

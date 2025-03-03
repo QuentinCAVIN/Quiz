@@ -34,7 +34,7 @@ public class QuizzController {
     public Response createQuiz(QuizzDto quizzDto, @Context SecurityContext securityContext) {
         String UID = securityContext.getUserPrincipal().getName();
         Long id = quizzService.createQuizz(quizzDto, UID);
-        URI location = UriBuilder.fromPath("/quiz/{id}").build(id);
+        URI location = UriBuilder.fromPath("/api/quiz/{id}").build(id);
         return Response.created(location).build();
     }
     @GET
@@ -54,7 +54,7 @@ public class QuizzController {
     @Authenticated
     public Response createQuestion(@PathParam("id") Long id, QuestionDto questionDto) {
         Long questionId = questionService.createQuestion(questionDto, id);
-        URI location = UriBuilder.fromPath("/questions/{questionId}").build(questionId);
+        URI location = UriBuilder.fromPath("/api/quiz/questions/{questionId}").build(questionId);
         return Response.created(location).build();
     }
     @PUT

@@ -76,7 +76,7 @@ public class IssuesIT {
     @TestSecurity(user = "UIDuser")
     @JwtSecurity(claims = {
             @Claim(key = "email", value = "user@gmail.com")})
-    public void getUsersMeShouldReturnAuthenticatedUser() {
+    public void getUsersMeShouldReturnCurrentAuthenticatedUser() {
         createUserInDB();
         RestAssured
                 .when()
@@ -104,6 +104,7 @@ public class IssuesIT {
     @JwtSecurity(claims = {
             @Claim(key = "email", value = "user@gmail.com")})
     public void postQuizShouldReturnsURLWhereFindResource() {
+        createUserInDB();
         QuizzDto quizz = new QuizzDto();
         quizz.setDescription("");
         quizz.setTitle("Nouveau Quiz");
@@ -115,16 +116,16 @@ public class IssuesIT {
                 .when()
                 .post("/api/quiz")
 
-                .then().header("Location", matchesPattern("http://localhost:8081/quiz/\\d+"))
+                .then().header("Location", matchesPattern("http://localhost:8081/api/quiz/\\d+"))
                 .statusCode(201);
     }
 
     @Test
-    @TestSecurity(user = "UIDuser")
+    @TestSecurity(user = "UIDuserwith2Quizzes")
     @JwtSecurity(claims = {
-            @Claim(key = "email", value = "user@gmail.com")})
+            @Claim(key = "email", value = "userwith2Quizzes@gmail.com")})
     public void getQuizzShouldReturnAllQuizzFromUsers() {
-        createUserInDB();
+        createUserInDB("with2Quizzes");
         createQuizInDB();
         createQuizInDB();
 
@@ -137,11 +138,11 @@ public class IssuesIT {
     }
 
     @Test
-    @TestSecurity(user = "UIDuser")
+    @TestSecurity(user = "UIDuserwithNoAssociatedQuiz")
     @JwtSecurity(claims = {
-            @Claim(key = "email", value = "user@gmail.com")})
+            @Claim(key = "email", value = "userwithNoAssociatedQuiz@gmail.com")})
     public void getQuizShouldReturnsEmptyListWhenUserHasNoAssociatedQuiz() {
-        createUserInDB();
+        createUserInDB("withNoAssociatedQuiz");
         RestAssured
                 .when()
                 .get("/api/quiz")
@@ -183,7 +184,7 @@ public class IssuesIT {
     @TestSecurity(user = "UIDuser")
     @JwtSecurity(claims = {
             @Claim(key = "email", value = "user@gmail.com")})
-    public void getQuizIdQuestionShouldDoSomething() {
+    public void getQuizIdQuestionShouldReturnURLWhereFindResource() {
         createUserInDB();
         createQuizInDB();
 
@@ -194,21 +195,26 @@ public class IssuesIT {
                 .contentType(ContentType.JSON).body(question)
 
                 .when()
-                .post("/api/quiz/1/question")
+                .post("/api/quiz/1/questions")
 
-                .then().body("title", equalTo("Nouvelle question"))
+                .then().body(is(emptyOrNullString())).header("Location", matchesPattern(
+                        "http://localhost:8081/api/quiz/questions/\\d+"))
                 .statusCode(201);
     }
 
-
-    ///{id}/questions
-
-    //Méthode utilitaire nécessaire aux tests
+    //Méthodes utilitaires nécessaires aux tests
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     private static void createUserInDB() {
         UserDto user = new UserDto();
         user.setUsername("user");
         user.setEmail("user@gmail.com");
+        RestAssured.given().contentType(ContentType.JSON).body(user).when().post("/api/users");
+    }
+
+    private static void createUserInDB(String userSpecification) {
+        UserDto user = new UserDto();
+        user.setUsername("user"+ userSpecification);
+        user.setEmail("user"+ userSpecification + "@gmail.com");
         RestAssured.given().contentType(ContentType.JSON).body(user).when().post("/api/users");
     }
 

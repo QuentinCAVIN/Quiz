@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -24,5 +25,5 @@ public class Question extends PanacheEntity {
     private Quizz quizz;
 
     @OneToMany(mappedBy = "question")
-    private List<Answer> answers;
+    private List<Answer> answers = new ArrayList<>();
 }

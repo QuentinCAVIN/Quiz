@@ -1,7 +1,9 @@
 package com.ynov.integration;
 
+import com.ynov.dto.QuestionDto;
 import com.ynov.dto.QuizzDto;
 import com.ynov.dto.UserDto;
+import com.ynov.model.Question;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.jwt.Claim;
 import io.quarkus.test.security.jwt.JwtSecurity;
@@ -176,6 +178,30 @@ public class IssuesIT {
                 .then().body(is(emptyOrNullString()))
                 .statusCode(404);
     }
+
+    @Test
+    @TestSecurity(user = "UIDuser")
+    @JwtSecurity(claims = {
+            @Claim(key = "email", value = "user@gmail.com")})
+    public void getQuizIdQuestionShouldDoSomething() {
+        createUserInDB();
+        createQuizInDB();
+
+        QuestionDto question = new QuestionDto();
+        question.setTitle("Nouvelle question");
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON).body(question)
+
+                .when()
+                .post("/api/quiz/1/question")
+
+                .then().body("title", equalTo("Nouvelle question"))
+                .statusCode(201);
+    }
+
+
+    ///{id}/questions
 
     //Méthode utilitaire nécessaire aux tests
     //////////////////////////////////////////////////////////////////////////////////////////////////////

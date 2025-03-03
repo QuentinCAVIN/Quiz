@@ -76,7 +76,7 @@ public class QuestionServiceImpl implements IQuestionService {
         return questionRepository.findById(id);
     }
 
-    @Override
+    /*@Override
     public boolean updateQuestion(Long quizzId, Long questionId, QuestionDto questionDto) {
         Optional<QuizzDto> quizz = quizzService.getQuizzById(quizzId);
         if (quizz.isEmpty()) {
@@ -106,4 +106,5 @@ public class QuestionServiceImpl implements IQuestionService {
         questionRepository.persist(question);
         return true;
     }
+     */
 }

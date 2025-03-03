@@ -29,8 +29,9 @@ public class UserController {
     @POST
     @Authenticated
     public Response createUser(UserDto userDto, @Context SecurityContext securityContext) {
+        String email = jwtToken.getClaim(Claims.email);
         String uid = securityContext.getUserPrincipal().getName();
-        userDto.setEmail(jwtToken.getClaim(Claims.email));
+        userDto.setEmail(email);
         userDto.setUid(uid);
         userService.createUser(userDto);
         URI location = UriBuilder.fromPath("/users/me").build();

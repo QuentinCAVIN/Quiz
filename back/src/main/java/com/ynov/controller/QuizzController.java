@@ -14,6 +14,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @Path("/api/quiz")
 @RequiredArgsConstructor
@@ -40,8 +41,9 @@ public class QuizzController {
     @Path("/{id}")
     @Authenticated
     public RestResponse<QuizzDto> getQuiz(@PathParam("id") Long id) {
-       if (quizzService.getQuizzById(id).isPresent()){
-           return RestResponse.ok(quizzService.getQuizzById(id).get());
+        Optional<QuizzDto> quizzDto = quizzService.getQuizzById(id);
+       if (quizzDto.isPresent()){
+           return RestResponse.ok(quizzDto.get());
        } else {
            return RestResponse.status(RestResponse.Status.NOT_FOUND);
        }

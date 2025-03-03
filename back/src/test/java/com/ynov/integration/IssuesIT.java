@@ -54,7 +54,6 @@ public class IssuesIT {
                 .statusCode(201);
     }
 
-
     @Test
     public void postUsersShouldNotCreateUserWhenUserIsNotAuthenticated() {
         UserDto user = new UserDto();
@@ -149,7 +148,34 @@ public class IssuesIT {
                 .statusCode(200);
     }
 
-    //UriBuilder.fromPath("/quiz/{id}").build(id);
+    @Test
+    @TestSecurity(user = "UIDuser")
+    @JwtSecurity(claims = {
+            @Claim(key = "email", value = "user@gmail.com")})
+    public void getQuizIdShouldReturnQuiz() {
+        createUserInDB();
+        createQuizInDB();
+        RestAssured
+                .when()
+                .get("/api/quiz/1")
+
+                .then().body("title", equalTo("Nouveau Quiz"))
+                .statusCode(200);
+    }
+
+    @Test
+    @TestSecurity(user = "UIDuser")
+    @JwtSecurity(claims = {
+            @Claim(key = "email", value = "user@gmail.com")})
+    public void getQuizIdShouldNotReturnInexistantQuiz() {
+        createUserInDB();
+        RestAssured
+                .when()
+                .get("/api/quiz/10000")
+
+                .then().body(is(emptyOrNullString()))
+                .statusCode(404);
+    }
 
     //Méthode utilitaire nécessaire aux tests
     //////////////////////////////////////////////////////////////////////////////////////////////////////

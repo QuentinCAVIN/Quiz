@@ -42,18 +42,30 @@ public class QuizzController {
     @Authenticated
     public RestResponse<QuizzDto> getQuiz(@PathParam("id") Long id) {
         Optional<QuizzDto> quizzDto = quizzService.getQuizzById(id);
-       if (quizzDto.isPresent()){
-           return RestResponse.ok(quizzDto.get());
-       } else {
-           return RestResponse.status(RestResponse.Status.NOT_FOUND);
-       }
+        if (quizzDto.isPresent()){
+            return RestResponse.ok(quizzDto.get());
+        } else {
+            return RestResponse.status(RestResponse.Status.NOT_FOUND);
+        }
     }
 
     @POST
     @Path("/{id}/questions")
     @Authenticated
-    public RestResponse<QuestionDto> createQuestion(@PathParam("id") Long id, QuestionDto questionDto) {
-        questionService.createQuestion(questionDto, id);
-        return RestResponse.status(RestResponse.Status.CREATED);
+    public Response createQuestion(@PathParam("id") Long id, QuestionDto questionDto) {
+        Long questionId = questionService.createQuestion(questionDto, id);
+        URI location = UriBuilder.fromPath("/questions/{questionId}").build(questionId);
+        return Response.created(location).build();
+    }
+    @PUT
+    @Path("/{quizzId}/questions/{questionId}")
+    @Authenticated
+    public RestResponse<?> updateQuestion(@PathParam("quizzId") Long quizzId,
+                                              @PathParam("questionId") Long questionId, QuestionDto questionDto) {
+        boolean updated = questionService.updateQuestion(quizzId, questionId, questionDto);
+        if (!updated) {
+            return RestResponse.status(RestResponse.Status.NOT_FOUND);
+        }
+        return RestResponse.noContent();
     }
 }

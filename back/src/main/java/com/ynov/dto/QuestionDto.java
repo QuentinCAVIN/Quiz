@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 @Builder
 public class QuestionDto {
+    long id;
     private String title;
     private List<AnswerDto> answers;
 }

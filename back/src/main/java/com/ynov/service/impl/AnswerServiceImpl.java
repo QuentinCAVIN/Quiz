@@ -22,7 +22,7 @@ public class AnswerServiceImpl implements IAnswerService {
     private final AnswerRepository answerRepository;
     private final IQuestionService questionService;
 
-     public void createAnswer(AnswerDto answerDto, long questionId){
+     public void createAnswer(AnswerDto answerDto, long questionId) {
          Answer answer =  AnswerMapper.mapAnswerDtoToAnswer(answerDto);
          answer.setQuestion(questionService.getQuestionById(questionId));
          answerRepository.persist(answer);

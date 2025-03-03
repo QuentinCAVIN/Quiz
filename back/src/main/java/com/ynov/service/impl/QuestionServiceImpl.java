@@ -7,9 +7,9 @@ import com.ynov.dto.QuizzDto;
 import com.ynov.model.Answer;
 import com.ynov.model.Question;
 import com.ynov.model.Quizz;
-import com.ynov.repository.AnswerRepository;
 import com.ynov.repository.QuestionRepository;
 import com.ynov.repository.QuizzRepository;
+import com.ynov.service.IAnswerService;
 import com.ynov.service.IQuestionService;
 import com.ynov.service.IQuizzService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -17,7 +17,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,40 +27,22 @@ import java.util.stream.Collectors;
 @Transactional
 public class QuestionServiceImpl implements IQuestionService {
     private final IQuizzService quizzService;
+    private final IAnswerService answerService;
     private final QuestionRepository questionRepository;
     private final QuizzRepository quizzRepository;
 
     @Override
-    public void createQuestion(QuestionDto questionDto, Long quizzId) {
+    public Long createQuestion(QuestionDto questionDto, Long quizzId) {
         Quizz quizzSearched = quizzRepository.findById(quizzId);
         if (quizzSearched != null) {
             Question question = QuestionMapper.mapQuestionDtoToQuestion(questionDto);
-//            List<Answer> answers = new ArrayList<>();
-
-//            Answer answer1 = new Answer();
-//            answer1.setTitle("answer1");
-//            answer1.setCorrect(true);
-//            answer1.setQuestion(question);
-//            answers.add(answer1);
-//
-//            Answer answer2 = new Answer();
-//            answer2.setTitle("answer2");
-//            answer2.setCorrect(false);
-//            answer2.setQuestion(question);
-//            answers.add(answer2);
-
-            // Associer les réponses à la question
-//            question.setAnswers(answers);
-//            log.info("Answers : {}", question.getAnswers().stream().map(Answer::isCorrect).collect(Collectors.toList()));
-//            question.setAnswers(questionDto.getAnswers().stream()
-//                    .map(AnswerMapper::mapAnswerDtoToAnswer)
-//                    .collect(Collectors.toList()));
             question.setQuizz(quizzSearched);
             questionRepository.persist(question);
             log.info("Created question: {}", question.getTitle());
-        } else {
-            log.info("Could not find quizz with id: {}", quizzId);
+            return question.id;
         }
+        log.info("Could not find quizz with id: {}", quizzId);
+        return null;
     }
 
     @Override
@@ -76,7 +57,7 @@ public class QuestionServiceImpl implements IQuestionService {
         return questionRepository.findById(id);
     }
 
-    /*@Override
+    @Override
     public boolean updateQuestion(Long quizzId, Long questionId, QuestionDto questionDto) {
         Optional<QuizzDto> quizz = quizzService.getQuizzById(quizzId);
         if (quizz.isEmpty()) {
@@ -96,15 +77,21 @@ public class QuestionServiceImpl implements IQuestionService {
         }
 
         question.setTitle(questionDto.getTitle());
-        question.getAnswers().clear();
         List<Answer> newAnswers = questionDto.getAnswers()
                 .stream()
                 .map(AnswerMapper::mapAnswerDtoToAnswer)
                 .toList();
-        question.setAnswers(newAnswers);
+        question.getAnswers().clear();
+
+        for (Answer newAnswer : newAnswers) {
+            newAnswer.setQuestion(question);
+
+            question.getAnswers().add(newAnswer);
+            answerService.createAnswer(AnswerMapper.mapAnswerToAnswerDto(newAnswer), questionId);
+        }
 
         questionRepository.persist(question);
+        log.info("Modified question: {}", question.getTitle());
         return true;
     }
-     */
 }

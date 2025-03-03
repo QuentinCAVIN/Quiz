@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Answer extends PanacheEntity {
     private String title;
 
-    private boolean isCorrect;
+    private boolean isCorrect = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_question", nullable = false)

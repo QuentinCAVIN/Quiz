@@ -51,6 +51,11 @@ public class QuizzServiceImpl implements IQuizzService {
 
     @Override
     public Optional<QuizzDto> getQuizzById(Long quizzId) {
-        return Optional.ofNullable(QuizzMapper.mapQuizzToQuizzDto(quizzRepository.findById(quizzId)));
+        Quizz quizzSearched = quizzRepository.findById(quizzId);
+        if (quizzSearched != null) {
+            return Optional.ofNullable(QuizzMapper.mapQuizzToQuizzDto(quizzSearched));
+        }
+        log.error("Quizz not found :(");
+        return Optional.empty();
     }
 }

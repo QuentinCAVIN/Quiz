@@ -23,6 +23,6 @@ public class Question extends PanacheEntity {
     @JoinColumn(name = "id_quizz")
     private Quizz quizz;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "question")
     private List<Answer> answers;
 }

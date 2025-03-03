@@ -1,5 +1,6 @@
 package com.ynov.integration;
 
+import com.ynov.dto.QuizzDto;
 import com.ynov.dto.UserDto;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.jwt.Claim;
@@ -98,34 +99,72 @@ public class IssuesIT {
     }
 
     @Test
-    @TestSecurity(user = "UIuser")
+    @TestSecurity(user = "UIDuser")
     @JwtSecurity(claims = {
             @Claim(key = "email", value = "user@gmail.com")})
-    public void getQuizzShouldReturnAllQuizzFromUsers() {
-        RestAssured
-                .when()
-                .get("/api/quizz")
+    public void postQuizShouldReturnsURLWhereFindResource() {
+        QuizzDto quizz = new QuizzDto();
+        quizz.setDescription("");
+        quizz.setTitle("Nouveau Quiz");
 
-                .then().body(is(emptyOrNullString()))
-                .statusCode(404);
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON).body(quizz)
+
+                .when()
+                .post("/api/quiz")
+
+                .then().header("Location", matchesPattern("http://localhost:8081/quiz/\\d+"))
+                .statusCode(201);
     }
 
     @Test
     @TestSecurity(user = "UIDuser")
-    public void getQuizzWrongADeterminer() {
+    @JwtSecurity(claims = {
+            @Claim(key = "email", value = "user@gmail.com")})
+    public void getQuizzShouldReturnAllQuizzFromUsers() {
+        createUserInDB();
+        createQuizInDB();
+        createQuizInDB();
+
         RestAssured
                 .when()
-                .get("/api/quizz")
+                .get("/api/quiz")
 
-                .then().body(is(emptyOrNullString()))
-                .statusCode(400);
+                .then().body("data", hasSize(2))
+                .statusCode(200);
     }
 
+    @Test
+    @TestSecurity(user = "UIDuser")
+    @JwtSecurity(claims = {
+            @Claim(key = "email", value = "user@gmail.com")})
+    public void getQuizShouldReturnsEmptyListWhenUserHasNoAssociatedQuiz() {
+        createUserInDB();
+        RestAssured
+                .when()
+                .get("/api/quiz")
+
+                .then().body("data", hasSize(0))
+                .statusCode(200);
+    }
+
+    //UriBuilder.fromPath("/quiz/{id}").build(id);
+
     //Méthode utilitaire nécessaire aux tests
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
     private static void createUserInDB() {
         UserDto user = new UserDto();
         user.setUsername("user");
         user.setEmail("user@gmail.com");
         RestAssured.given().contentType(ContentType.JSON).body(user).when().post("/api/users");
+    }
+
+    private static void createQuizInDB() {
+        createUserInDB();
+        QuizzDto quizz = new QuizzDto();
+        quizz.setDescription("");
+        quizz.setTitle("Nouveau Quiz");
+        RestAssured.given().contentType(ContentType.JSON).body(quizz).when().post("/api/quiz");
     }
 }

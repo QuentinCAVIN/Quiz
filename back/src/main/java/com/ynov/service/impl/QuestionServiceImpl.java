@@ -36,23 +36,23 @@ public class QuestionServiceImpl implements IQuestionService {
         Quizz quizzSearched = quizzRepository.findById(quizzId);
         if (quizzSearched != null) {
             Question question = QuestionMapper.mapQuestionDtoToQuestion(questionDto);
-            List<Answer> answers = new ArrayList<>();
+//            List<Answer> answers = new ArrayList<>();
 
-            Answer answer1 = new Answer();
-            answer1.setTitle("answer1");
-            answer1.setCorrect(true);
-            answer1.setQuestion(question);
-            answers.add(answer1);
-
-            Answer answer2 = new Answer();
-            answer2.setTitle("answer2");
-            answer2.setCorrect(false);
-            answer2.setQuestion(question);
-            answers.add(answer2);
+//            Answer answer1 = new Answer();
+//            answer1.setTitle("answer1");
+//            answer1.setCorrect(true);
+//            answer1.setQuestion(question);
+//            answers.add(answer1);
+//
+//            Answer answer2 = new Answer();
+//            answer2.setTitle("answer2");
+//            answer2.setCorrect(false);
+//            answer2.setQuestion(question);
+//            answers.add(answer2);
 
             // Associer les réponses à la question
-            question.setAnswers(answers);
-            log.info("Answers : {}", question.getAnswers().stream().map(Answer::isCorrect).collect(Collectors.toList()));
+//            question.setAnswers(answers);
+//            log.info("Answers : {}", question.getAnswers().stream().map(Answer::isCorrect).collect(Collectors.toList()));
 //            question.setAnswers(questionDto.getAnswers().stream()
 //                    .map(AnswerMapper::mapAnswerDtoToAnswer)
 //                    .collect(Collectors.toList()));

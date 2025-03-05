@@ -1,5 +1,6 @@
 package com.ynov.helper;
 
+import com.ynov.dto.AnswerDto;
 import com.ynov.dto.QuestionDto;
 import com.ynov.dto.QuizzDto;
 import com.ynov.dto.UserDto;
@@ -7,6 +8,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 
@@ -88,8 +90,23 @@ public class TestHelper {
         RestAssured.given().contentType(ContentType.JSON).body(question).when().post("/api/quiz/1/questions");
     }
 
+    //TODO Vérifier l'Association entre la réponse a la Question un fois le travail de mounir récupéré
     public static void updateQuestionWithResponse() {
         createQuestion();
-        //RestAssured.given().contentType(ContentType.JSON).body(question).when().put("/api/quiz/1/questions");
+        QuestionDto question = new QuestionDto();
+        question.setTitle("Nouvelle question");
+
+        AnswerDto answer1 = new AnswerDto();
+        answer1.setTitle("réponse 1");
+        answer1.setIsCorrect(false);
+
+        AnswerDto answer2 = new AnswerDto();
+        answer2.setTitle("réponse 2");
+        answer2.setIsCorrect(true);
+
+        question.getAnswers().add(answer1);
+        question.getAnswers().add(answer2);
+
+        RestAssured.given().contentType(ContentType.JSON).body(question).when().put("/api/quiz/1/questions/1");
     }
 }

@@ -13,7 +13,7 @@ public class AnswerMapper {
     public static Answer mapAnswerDtoToAnswer(AnswerDto answerDto) {
         return Answer.builder()
                 .title(answerDto.getTitle())
-                .isCorrect(answerDto.isCorrect())
+                .isCorrect(answerDto.getIsCorrect())
                 .build();
     }
 }

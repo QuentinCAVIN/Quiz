@@ -15,7 +15,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-
+//TODO Remplacer tout les id par IdQUestion ou IdResponse, ça sera plus clair
 @Path("/api/quiz")
 @RequiredArgsConstructor
 public class QuizzController {
@@ -24,7 +24,7 @@ public class QuizzController {
 
     @GET
     @Authenticated
-    public RestResponse<QuizzResponse> quiz(@Context SecurityContext securityContext) {
+    public RestResponse<QuizzResponse> getAllQuizzes(@Context SecurityContext securityContext) {
         String uid = securityContext.getUserPrincipal().getName();
         List<QuizzDto> quizzes = quizzService.getQuizzesByUser(uid);
         return RestResponse.ok(new QuizzResponse(quizzes));
@@ -49,11 +49,12 @@ public class QuizzController {
         }
     }
 
+    //TODO Issue 9 pas réalisé, la question doit etre valide au moment de la création c'est a dire déja contenir des réponses
     @POST
     @Path("/{id}/questions")
     @Authenticated
-    public Response createQuestion(@PathParam("id") Long id, QuestionDto questionDto) {
-        Long questionId = questionService.createQuestion(questionDto, id);
+    public Response createQuestion(@PathParam("id") Long quizId, QuestionDto questionDto) {
+        Long questionId = questionService.createQuestion(questionDto, quizId);
         URI location = UriBuilder.fromPath("/api/quiz/questions/{questionId}").build(questionId);
         return Response.created(location).build();
     }

@@ -82,7 +82,6 @@ public class QuestionServiceImpl implements IQuestionService {
                 .map(AnswerMapper::mapAnswerDtoToAnswer)
                 .toList();
         question.getAnswers().clear();
-
         for (Answer newAnswer : newAnswers) {
             newAnswer.setQuestion(question);
 

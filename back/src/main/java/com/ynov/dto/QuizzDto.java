@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -15,5 +16,5 @@ public class QuizzDto {
     long id;
     String title;
     String description;
-    List<QuestionDto> questions;
+    List<QuestionDto> questions = new ArrayList<>();
 }

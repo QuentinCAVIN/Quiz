@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AnswerDto {
     String title;
-    boolean isCorrect;
+    Boolean isCorrect;
 }

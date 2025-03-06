@@ -45,6 +45,7 @@ public class UserServiceImpl implements IUserService {
                 .collect(Collectors.toList());
     }
 
+    //TODO Pas de vérification d'unicité du mail dans la BDD avant la création
     @Override
     public void createUser(UserDto userDTO) {
         User user = UserMapper.mapUserDtoToUser(userDTO);
